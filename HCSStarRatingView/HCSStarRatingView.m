@@ -31,6 +31,7 @@
     NSUInteger _maximumValue;
     CGFloat _value;
     UIColor *_starBorderColor;
+    int firstSelected;
 }
 
 @dynamic minimumValue;
@@ -65,6 +66,7 @@
     _spacing = 5.f;
     _continuous = YES;
     _starBorderWidth = 1.0f;
+    firstSelected = 0;
     _emptyStarColor = [UIColor clearColor];
     
     [self _updateAppearanceForState:self.enabled];
@@ -314,7 +316,7 @@
                 [self _drawAccurateStarWithFrame:frame tintColor:self.tintColor progress:_value - idx];
             }
             else {
-                 [self _drawHalfStarWithFrame:frame tintColor:self.tintColor];
+                [self _drawHalfStarWithFrame:frame tintColor:self.tintColor];
             }
         } else {
             [self _drawStarWithFrame:frame tintColor:self.tintColor highlighted:highlighted];
@@ -352,7 +354,7 @@
         if (_shouldBecomeFirstResponder && ![self isFirstResponder]) {
             [self becomeFirstResponder];
         }
-        [self _handleTouch:touch];
+        //[self _handleTouch:touch];
         return YES;
     } else {
         return NO;
@@ -411,6 +413,18 @@
         }
     } else {
         value = ceilf(value);
+        NSLog(@"value == %f check = %d ",value,firstSelected);
+        
+        if (firstSelected == 0) {
+            firstSelected = 1;
+            
+        }
+        else{
+            if (value == 1.0) {
+                firstSelected = 0 ;
+                value = 0;
+            }
+        }
     }
     [self setValue:value sendValueChangedAction:_continuous];
 }
